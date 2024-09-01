@@ -1,10 +1,14 @@
 var mysql = require('mysql');
 
 var connection = mysql.createConnection({
-  host     : 'localhost',
-  user     : 'customuser',
-  password : 'Vikas#123',
-  database : 'ecommerce'
+  // host     : 'localhost',
+  // user     : 'customuser',
+  // password : 'Vikas#123',
+  // database : 'ecommerce'
+  host     : 'be0nttzkehnegxybohsx-mysql.services.clever-cloud.com',
+  user     : 'umivmljiji9imvxp',
+  password : 'a04tg0Rid3JQx0oCujcQ',
+  database : 'be0nttzkehnegxybohsx'
 });
 connection.connect(function (err) {
     if (err) {
