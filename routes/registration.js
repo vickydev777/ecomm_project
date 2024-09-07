@@ -27,7 +27,9 @@ router.use(bodyParsar.json());
 router.post('/login', function(req, res, next){
   var useremail = req.body.email;
   var pwd = req.body.password;
-              
+  var token = req.body.token;
+  console.log('token added');
+         console.log(token);
   var queryStr = "select * from registration where email = '"+useremail+"' AND password = '"+pwd+"'";
   console.log(queryStr);
   con.query(queryStr,(err,rows,fields)=>{
