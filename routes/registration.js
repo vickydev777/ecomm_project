@@ -2,8 +2,12 @@ const express = require('express');
 const router = express.Router();
 var bodyParsar = require('body-parser');
 const con = require('../connection');
+const fileUpload = require("express-fileupload");
 
 router.use(bodyParsar.json());
+router.use(
+  fileUpload()
+);
 
 //  router.get("/",(req,res)=>{
 //      res.send("app is working fine.");
@@ -110,33 +114,54 @@ router.get('/productSearch', function(req, res, next){
 
 
 router.post('/addProduct', function(req, res, next){
+  // var productFormData = JSON.parse(req.body.product_form_data);
+  // var productName = productFormData[0].productName;
+  // var productPrice = productFormData[0].productPrice;
+  // var productCategory = productFormData[0].productCategory;
+  // var status = productFormData[0].status;
   var productName = req.body.productName;
-  var productImage = req.body.productImage;
+  var imageData = JSON.parse(JSON.stringify(req.files));
+  var productImage = imageData.name;
   var productPrice = req.body.productPrice;
   var productCategory = req.body.productCategory;
   var status = req.body.status;
-  
-  var productDisplaySql = "Insert into products set `productName` = '" +
-  productName +
-               "',`productImage` = '" +
-               productImage +
-               "',`productPrice` = '" +
-               productPrice +
-               "',`category` = '" +
-               productCategory +
-               "',`status` = '" +
-               status +
-               "',`created_at` = now()";
-  console.log(productDisplaySql);
-  con.query(productDisplaySql,(err,result)=>{
-    if(err){
-      //console.log('error generated');
-      res.status(500).send({error:'something went wrong'});
+  console.log(req.files.productImage);
+  var sampleFile = req.files.productImage;
+  var filename = sampleFile.name;
+  filename = filename.split('.').join('-' + Date.now() + '.');
+  console.log(filename);
+  // Use the mv() method to place the file somewhere on your server
+  sampleFile.mv('/var/www/html/ecomm_project/uploads/'+filename, function(err) {
+    if (err){
+      console.log('not working');
+      return res.status(500).send(err);
     }else{
-      res.json(result.insertId);
-      //console.log(result.insertId);
+      var productDisplaySql = "Insert into products set `productName` = '" +
+      productName +
+                   "',`productImage` = '" +
+                   filename +
+                   "',`productPrice` = '" +
+                   productPrice +
+                   "',`category` = '" +
+                   productCategory +
+                   "',`status` = '" +
+                   status +
+                   "',`created_at` = now()";
+      console.log(productDisplaySql);
+      con.query(productDisplaySql,(err,result)=>{
+        if(err){
+          //console.log('error generated');
+          res.status(500).send({error:'something went wrong'});
+        }else{
+          res.json(result.insertId);
+          //console.log(result.insertId);
+        }
+        });
     }
-    });
+  });
+  
+  // return false;
+  
 });
 
 router.get('/productEdit/:id', function(req, res, next){
