@@ -131,9 +131,9 @@ router.post('/addProduct', function(req, res, next){
   filename = filename.split('.').join('-' + Date.now() + '.');
   console.log(filename);
   // Use the mv() method to place the file somewhere on your server
-  sampleFile.mv('/var/www/html/ecomm_project/uploads/'+filename, function(err) {
+  sampleFile.mv('https://ecomm-project-1lsb.onrender.com/uploads/'+filename, function(err) {
     if (err){
-      console.log('not working');
+      console.log('file not uploaded');
       return res.status(500).send(err);
     }else{
       var productDisplaySql = "Insert into products set `productName` = '" +
