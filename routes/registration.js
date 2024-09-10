@@ -131,7 +131,7 @@ router.post('/addProduct', function(req, res, next){
   filename = filename.split('.').join('-' + Date.now() + '.');
   console.log(filename);
   // Use the mv() method to place the file somewhere on your server
-  sampleFile.mv('opt/render/ecomm_project/public/uploads/'+filename, function(err) {
+  sampleFile.mv('/opt/render/ecomm_project/public/uploads/'+filename, function(err) {
     if (err){
       console.log('file not uploaded');
       return res.status(500).send(err);
