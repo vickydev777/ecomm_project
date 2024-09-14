@@ -3,6 +3,7 @@ const router = express.Router();
 var bodyParsar = require('body-parser');
 const con = require('../connection');
 const fileUpload = require("express-fileupload");
+const AWS = require('aws-sdk');
 
 router.use(bodyParsar.json());
 router.use(
@@ -130,13 +131,29 @@ router.post('/addProduct', function(req, res, next){
   var filename = sampleFile.name;
   filename = filename.split('.').join('-' + Date.now() + '.');
   console.log(filename);
-  // Use the mv() method to place the file somewhere on your server
-  sampleFile.mv('/opt/render/ecomm-project/src/public/uploads/'+filename, function(err) {
-    if (err){
-      console.log('file not uploaded');
-      return res.status(500).send(err);
-    }else{
-      var productDisplaySql = "Insert into products set `productName` = '" +
+  
+  const awsConfig = {
+  accessKeyId : 'AKIAYQNJTAIBOKD7XV7N',
+  secretAccessKey : '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',
+  region : 'eu-north-1'
+}
+
+const S3 = new AWS.S3(awsConfig);
+
+  const fileContent  = Buffer.from(req.files.productImage.data, 'binary');
+  // Setting up S3 upload parameters
+  const params = {
+      Bucket: 'testing-ecomm-vikas',
+      Key: filename, // File name you want to save as in S3
+      Body: fileContent 
+  };
+
+  // Uploading files to the bucket
+  S3.upload(params, function(err, data) {
+      if (err) {
+        res.status(500).send({error:'Image not uploaded'});
+      }else{
+            var productDisplaySql = "Insert into products set `productName` = '" +
       productName +
                    "',`productImage` = '" +
                    filename +
@@ -151,16 +168,24 @@ router.post('/addProduct', function(req, res, next){
       con.query(productDisplaySql,(err,result)=>{
         if(err){
           //console.log('error generated');
-          res.status(500).send({error:'something went wrong'});
+          res.status(500).send({error:'product not added.'});
         }else{
           res.json(result.insertId);
           //console.log(result.insertId);
+      //      res.send({
+      //     "response_code": 200,
+      //     "response_message": "Success",
+      //     "response_data": data
+      // });
         }
         });
-    }
+      }
+      
   });
   
-  // return false;
+  // Use the mv() method to place the file somewhere on your server
+  // sampleFile.mv('/var/www/html/ecomm_project/uploads/'+filename, function(err) {
+  
   
 });
 
@@ -177,6 +202,83 @@ router.get('/productEdit/:id', function(req, res, next){
       res.json(rows);
       }
     });
+});
+
+router.post('/updateProduct', function(req, res, next){
+  // var productFormData = JSON.parse(req.body.product_form_data);
+  // var productName = productFormData[0].productName;
+  // var productPrice = productFormData[0].productPrice;
+  // var productCategory = productFormData[0].productCategory;
+  // var status = productFormData[0].status;
+  var productId = req.body.productId;
+  var productName = req.body.productName;
+  var imageData = JSON.parse(JSON.stringify(req.files));
+  var productImage = imageData.name;
+  var productPrice = req.body.productPrice;
+  var productCategory = req.body.productCategory;
+  var status = req.body.status;
+  console.log(req.files.productImage);
+  var sampleFile = req.files.productImage;
+  var filename = sampleFile.name;
+  filename = filename.split('.').join('-' + Date.now() + '.');
+  console.log(filename);
+  
+  const awsConfig = {
+  accessKeyId : 'AKIAYQNJTAIBOKD7XV7N',
+  secretAccessKey : 'x33wVBDrsbuBC4Pv2V3iBEqbqdCDNc6rn4gqmxwc',
+  region : 'eu-north-1'
+}
+
+const S3 = new AWS.S3(awsConfig);
+
+  const fileContent  = Buffer.from(req.files.productImage.data, 'binary');
+  // Setting up S3 upload parameters
+  const params = {
+      Bucket: 'testing-ecomm-vikas',
+      Key: filename, // File name you want to save as in S3
+      Body: fileContent 
+  };
+
+  // Uploading files to the bucket
+  S3.upload(params, function(err, data) {
+      if (err) {
+        res.status(500).send({error:'Image not uploaded'});
+      }else{
+            var productDisplaySql = "update products set `productName` = '" +
+      productName +
+                   "',`productImage` = '" +
+                   filename +
+                   "',`productPrice` = '" +
+                   productPrice +
+                   "',`category` = '" +
+                   productCategory +
+                   "',`status` = '" +
+                   status +
+                   "',`created_at` = now() where `id` = '" + productId + "'";
+      console.log(productDisplaySql);
+      con.query(productDisplaySql,(err,result)=>{
+        if(err){
+          //console.log('error generated');
+          res.status(500).send({error:'product not updated.'});
+        }else{
+          res.status(200).send({success:'product updated successfully.'});
+         // res.json(result.insertId);
+          //console.log(result.insertId);
+      //      res.send({
+      //     "response_code": 200,
+      //     "response_message": "Success",
+      //     "response_data": data
+      // });
+        }
+        });
+      }
+      
+  });
+  
+  // Use the mv() method to place the file somewhere on your server
+  // sampleFile.mv('/var/www/html/ecomm_project/uploads/'+filename, function(err) {
+  
+  
 });
 
 module.exports = router; 
