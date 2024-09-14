@@ -1,6 +1,7 @@
 const express = require('express');
-const app = express();
+require('dotenv').config();
 const cors = require('cors');
+const app = express();
 var registrationRouter = require('./routes/registration');
 
 app.use(cors());
@@ -14,6 +15,8 @@ app.use(cors());
 
 // });
 
+
+
 app.get('/', function (req, res) {
   res.send('Hello World')
 })
@@ -22,4 +25,5 @@ app.use('/registration', registrationRouter);
 
 app.listen(3000, function(){
 	console.log('Node server listening on port 3000');
+ 
 });
