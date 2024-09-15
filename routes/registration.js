@@ -143,7 +143,7 @@ const S3 = new AWS.S3(awsConfig);
   const fileContent  = Buffer.from(req.files.productImage.data, 'binary');
   // Setting up S3 upload parameters
   const params = {
-      Bucket: 'testing-ecomm-vikas',
+      Bucket: 'testing-ecomm-bucket',
       Key: filename, // File name you want to save as in S3
       Body: fileContent 
   };
@@ -234,7 +234,7 @@ const S3 = new AWS.S3(awsConfig);
   const fileContent  = Buffer.from(req.files.productImage.data, 'binary');
   // Setting up S3 upload parameters
   const params = {
-      Bucket: 'testing-ecomm-vikas',
+      Bucket: 'testing-ecomm-bucket',
       Key: filename, // File name you want to save as in S3
       Body: fileContent 
   };
