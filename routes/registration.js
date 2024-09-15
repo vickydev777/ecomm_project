@@ -151,7 +151,8 @@ const S3 = new AWS.S3(awsConfig);
   // Uploading files to the bucket
   S3.upload(params, function(err, data) {
       if (err) {
-        res.status(500).send({error:'Image not uploaded'});
+        throw err;
+        //res.status(500).send({error:'Image not uploaded'});
       }else{
             var productDisplaySql = "Insert into products set `productName` = '" +
       productName +
@@ -167,9 +168,9 @@ const S3 = new AWS.S3(awsConfig);
       console.log(productDisplaySql);
       con.query(productDisplaySql,(err,result)=>{
         if(err){
-          throw err;
+          //throw err;
           //console.log('error generated');
-          //res.status(500).send({error:'product not added.'});
+          res.status(500).send({error:'product not added.'});
         }else{
           res.json(result.insertId);
           //console.log(result.insertId);
