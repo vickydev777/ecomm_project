@@ -5,6 +5,7 @@ const app = express();
 var registrationRouter = require('./routes/registration');
 
 app.use(cors());
+// extra line added
 // app.use((req, res, next) => {
 // 	res.header("Access-Control-Allow-Origin","*");
 // 	res.header("Access-Control-Allow-Headers","Origins","X-Requested-With","Content-Type","Accept","Authorization");
