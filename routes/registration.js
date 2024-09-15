@@ -167,8 +167,9 @@ const S3 = new AWS.S3(awsConfig);
       console.log(productDisplaySql);
       con.query(productDisplaySql,(err,result)=>{
         if(err){
+          throw err;
           //console.log('error generated');
-          res.status(500).send({error:'product not added.'});
+          //res.status(500).send({error:'product not added.'});
         }else{
           res.json(result.insertId);
           //console.log(result.insertId);
