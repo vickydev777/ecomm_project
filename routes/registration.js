@@ -133,8 +133,8 @@ router.post('/addProduct', function(req, res, next){
   console.log(filename);
   
   const awsConfig = {
-  accessKeyId : 'AKIAYQNJTAIBAOLNINXB',
-  secretAccessKey : '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',
+  accessKeyId : 'AKIAYQNJTAIBKREGG7GA',
+  secretAccessKey : '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',
   region : 'eu-north-1'
 }
 
@@ -226,8 +226,8 @@ router.post('/updateProduct', function(req, res, next){
   console.log(filename);
   
   const awsConfig = {
-  accessKeyId : 'AKIAYQNJTAIBAOLNINXB',
-  secretAccessKey : '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',
+  accessKeyId : 'AKIAYQNJTAIBKREGG7GA',
+  secretAccessKey : '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',
   region : 'eu-north-1'
 }
 
