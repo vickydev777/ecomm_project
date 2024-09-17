@@ -151,13 +151,14 @@ const S3 = new AWS.S3(awsConfig);
   // Uploading files to the bucket
   S3.upload(params, function(err, data) {
       if (err) {
-        throw err;
-        //res.status(500).send({error:'Image not uploaded'});
+        //throw err;
+        res.status(500).send({error:'Image not uploaded'});
       }else{
+          var imageLocation = data.Location;
             var productDisplaySql = "Insert into products set `productName` = '" +
       productName +
                    "',`productImage` = '" +
-                   filename +
+                   imageLocation +
                    "',`productPrice` = '" +
                    productPrice +
                    "',`category` = '" +
@@ -246,10 +247,11 @@ const S3 = new AWS.S3(awsConfig);
       if (err) {
         res.status(500).send({error:'Image not uploaded'});
       }else{
+        var imageLocation = data.Location;
             var productDisplaySql = "update products set `productName` = '" +
       productName +
                    "',`productImage` = '" +
-                   filename +
+                   imageLocation +
                    "',`productPrice` = '" +
                    productPrice +
                    "',`category` = '" +
