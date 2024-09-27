@@ -133,8 +133,8 @@ router.post('/addProduct', function(req, res, next){
   console.log(filename);
   
   const awsConfig = {
-  accessKeyId : 'AKIAYQNJTAIBKREGG7GA',
-  secretAccessKey : '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',
+  accessKeyId : 'NJTAIBKR',
+  secretAccessKey : '2BXBTKXfzrfzpKOnPd',
   region : 'eu-north-1'
 }
 
@@ -143,7 +143,7 @@ const S3 = new AWS.S3(awsConfig);
   const fileContent  = Buffer.from(req.files.productImage.data, 'binary');
   // Setting up S3 upload parameters
   const params = {
-      Bucket: 'testing-ecomm-bucket',
+      Bucket: 'testing-m-bucket',
       Key: filename, // File name you want to save as in S3
       Body: fileContent 
   };
@@ -227,8 +227,8 @@ router.post('/updateProduct', function(req, res, next){
   console.log(filename);
   
   const awsConfig = {
-  accessKeyId : 'AKIAYQNJTAIBKREGG7GA',
-  secretAccessKey : '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',
+  accessKeyId : 'TAIBKRE',
+  secretAccessKey : '2BXBTKXfzrfzpKOnPd',
   region : 'eu-north-1'
 }
 
@@ -237,7 +237,7 @@ const S3 = new AWS.S3(awsConfig);
   const fileContent  = Buffer.from(req.files.productImage.data, 'binary');
   // Setting up S3 upload parameters
   const params = {
-      Bucket: 'testing-ecomm-bucket',
+      Bucket: 'testing-m-bucket',
       Key: filename, // File name you want to save as in S3
       Body: fileContent 
   };
